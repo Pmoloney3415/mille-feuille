@@ -1,4 +1,5 @@
 import time
+import torch
 import numpy as np
 
 from botorch.optim import optimize_acqf, optimize_acqf_mixed
