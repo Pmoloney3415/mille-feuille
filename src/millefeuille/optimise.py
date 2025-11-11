@@ -1,4 +1,5 @@
 import time
+import numpy as np
 
 from botorch.optim import optimize_acqf, optimize_acqf_mixed
 from botorch.acquisition.objective import ScalarizedPosteriorTransform
