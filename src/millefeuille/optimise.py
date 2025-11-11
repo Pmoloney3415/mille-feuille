@@ -1,6 +1,7 @@
 import time
 
 from botorch.optim import optimize_acqf, optimize_acqf_mixed
+from botorch.acquisition.objective import ScalarizedPosteriorTransform
 
 from .state import State
 
@@ -18,10 +19,14 @@ def generate_batch(
 ):
     # Generate new candidates
     if state.l_MultiFidelity:
+        # Optimise according to only the target fidelity
+        fid_arr = np.zeros(state.fidelity_domain.num_fidelities)
+        fid_arr[state.fidelity_domain.target_fidelity] = 1.0
+        post_transform = ScalarizedPosteriorTransform(weights=torch.tensor(fid_arr))
         X_next, _ = optimize_acqf_mixed(
             acq_function=acq_function,
+            posterior_transform=post_transform,
             bounds=state.get_bounds(),
-            fixed_features_list=[state.fidelity_domain.target_fidelities],
             q=batch_size,
             num_restarts=num_restarts,
             raw_samples=raw_samples,
