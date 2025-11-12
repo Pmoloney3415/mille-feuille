@@ -17,24 +17,14 @@ def generate_batch(
     optimizer_options,
 ):
     # Generate new candidates
-    if state.l_MultiFidelity:
-        X_next, _ = optimize_acqf_mixed(
-            acq_function=acq_function,
-            bounds=state.get_bounds(),
-            q=batch_size,
-            num_restarts=num_restarts,
-            raw_samples=raw_samples,
-            options=optimizer_options,
-        )
-    else:
-        X_next, _ = optimize_acqf(
-            acq_function,
-            bounds=state.get_bounds(),
-            q=batch_size,
-            num_restarts=num_restarts,
-            raw_samples=raw_samples,
-            options=optimizer_options,
-        )
+    X_next, _ = optimize_acqf(
+        acq_function,
+        bounds=state.get_bounds(),
+        q=batch_size,
+        num_restarts=num_restarts,
+        raw_samples=raw_samples,
+        options=optimizer_options,
+    )
 
     return X_next
 
